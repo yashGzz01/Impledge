@@ -1,35 +1,38 @@
 import time
-start = time.time()
-_end = '_end_'
+startTime = time.time()
+_endTime = '_end_'
 
 
 def MakeTrie(words):
-  root = dict()
+  root_dictionary = dict()
   for word in words:
-    current_dict = root
+    current_dictionary = root_dictionary
     for letter in word:
-      current_dict = current_dict.setdefault(letter, {})
-    current_dict[_end] = _end
-  return root
+      current_dictionary = current_dictionary.setdefault(letter, {})
+    current_dictionary[_endTime] = _endTime
+  return root_dictionary
 
 def LongestCompoundWord(original_trie, trie, word, level=0):
-  first_letter = word[0]
-  if not first_letter in trie:
+
+  # first letter
+  f_l = word[0]
+
+  if not f_l in trie:
     return False
-  if len(word)==1 and _end in trie[first_letter]:
+  if len(word)==1 and _endTime in trie[f_l]:
     return level>0
-  if _end in trie[first_letter] and LongestCompoundWord(original_trie, original_trie, word[1:], level+1):
+  if _endTime in trie[f_l] and LongestCompoundWord(original_trie, original_trie, word[1:], level+1):
     return True
-  return LongestCompoundWord(original_trie, trie[first_letter], word[1:], level)
+  return LongestCompoundWord(original_trie, trie[f_l], word[1:], level)
 
 
 # f = open("file_name", 'r')
 
 f = open("./Input_01.txt", 'r')
 
-lines = f.readlines()
+total_lines = f.readlines()
 words=[]
-for line in lines:
+for line in total_lines:
     words.append(line.replace("\n",""))
 
 
@@ -38,12 +41,16 @@ trie = MakeTrie(words)
 words = sorted(words, key=lambda x: len(x), reverse=True)
 
 
+# Finding the first Longest Compound Word
 
 for word in words:
   if LongestCompoundWord(trie,trie,word):
     print("Longest Compound Word: {0:}".format(word))
     words.remove(word)
     break
+  
+  
+# Finding the Second Longest Compound Word
 
 for word in words:
   if LongestCompoundWord(trie,trie,word):
@@ -52,5 +59,5 @@ for word in words:
     break
 
 end = time.time()
-elapsed = end-start
-print("Execution Time is: " + str(elapsed) + " seconds.")
+elapsedTime = end-startTime
+print("Execution Time is: " + str(elapsedTime) + " seconds.")
